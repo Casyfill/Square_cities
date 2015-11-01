@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
+#searchMatrix
 def matrix(swBound,neBound, boundID): 
 	vert, gor = 2,2
 	swBound =[float(x) for x in swBound.split(',')]
