@@ -4,10 +4,11 @@ notes_on_scraping
 ## TODO
 - [X] credentials
 - [X] extract place_data
-- [ ] update paths
+- [X] update paths
+- [X] make scraper bash-workable
 - [ ] overal architecture
-- [ ] make scraper bash-workable
 - [ ] additional search_checker
+- [ ] to Mongo database (?)
 
 
 Here will be a small instruction on data scraping.

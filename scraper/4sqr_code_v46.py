@@ -3,22 +3,11 @@
 
 ############# TODOS
 # [X] credentials
-# [ ] paths
+# [X] paths
 # [ ] extract place_research
 # [ ] overal architecture
-# [ ] 
+# [ ] recheck suspecious
 
-#  two modes: server (s) and local (l)
-mode = 's'  # 'l'
-
-
-#TODO: need to rewrite that
-pathes = {'l': {'modulePath': "/Users/casy/Dropbox (RN&IA'N)/Projects/Kats/Afisha/4sqr_scrape/code/misc/",
-                'resultPath': "/Users/casy/Dropbox (RN&IA'N)/Projects/Kats/Afisha/4sqr_scrape/data/"},
-          's': {'modulePath': "/root/4sqr_scraper/code/misc",
-                'resultPath': "/root/4sqr_scraper/data/"}}
-
-modulePath, resultPath = pathes[mode]['modulePath'], pathes[mode]['resultPath']
 
 # import requests,time,json
 import sys
@@ -26,9 +15,18 @@ import csv
 import time
 import json
 import os
-# sys.path.append(modulePath)
-SQUARE = os.genenv('SQUARE')
 
+from misc.matrix import matrix
+from misc.boundChecker import checkVsBound, checkArrayVsBound
+
+from misc import parseVenue
+from misc import frsqrRequests
+
+# sys.path.append(modulePath)
+SQUARE = os.getenv('SQUARE')
+
+
+# credentials
 with open(SQUARE + 'scraper/credentials.json') as data_file:    
     credentials = json.load(data_file)
 
@@ -36,11 +34,11 @@ CLIENT_SECRET = credentials['data']['CLIENT_SECRET']
 CLIENT_ID     = credentials['data']['CLIENT_ID']
 
 
-from matrix import matrix
-from boundChecker import checkVsBound, checkArrayVsBound
+# path to functionality
+modulePath = SQUARE + 'scraper/misc'
+# path to data
+resultPath = SQUARE + 'data/'
 
-import parseVenue
-import frsqrRequests
 
 # placeDict
 placeDict = {'name': 'Oklahoma',
