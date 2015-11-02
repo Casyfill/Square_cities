@@ -3,8 +3,8 @@ notes_on_scraping
 
 ## TODO
 - [X] credentials
+- [X] extract place_data
 - [ ] update paths
-- [ ] extract place_data
 - [ ] overal architecture
 - [ ] make scraper bash-workable
 - [ ] additional search_checker

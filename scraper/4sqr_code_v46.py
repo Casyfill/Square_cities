@@ -42,11 +42,17 @@ from boundChecker import checkVsBound, checkArrayVsBound
 import parseVenue
 import frsqrRequests
 
+# placeDict
+placeDict = {'name': 'Oklahoma',
+			 'swBound' : '33.329980, -103.567494',
+			 'neBound' : '37.384914, -94.111012'
+			}
 
 sleepTime = 20
-place = 'Oklahoma3'
-swBound = '33.329980, -103.567494'
-neBound = '37.384914, -94.111012'
+place = placeDict['name']
+swBound = placeDict['swBound']
+neBound = placeDict['neBound']
+#TODO change path
 resultPath += (place + '.csv')
 
 
