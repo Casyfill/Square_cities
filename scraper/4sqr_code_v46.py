@@ -41,9 +41,9 @@ resultPath = SQUARE + 'data/'
 
 
 # placeDict
-placeDict = {'name': 'Oklahoma',
-			 'swBound' : '33.329980, -103.567494',
-			 'neBound' : '37.384914, -94.111012'
+placeDict = {'name': 'Plum_Island',
+			 'swBound' : '41.159147, -72.218754',
+			 'neBound' : '41.196776, -72.154429'
 			}
 
 sleepTime = 20

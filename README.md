@@ -29,4 +29,5 @@
 - de Lange, Michiel, and Martijn De Waal. Ownership in the hybrid city. Virtueel Platform, 2012.
 - Benjamin, Andrew. "Porosity at the Edge: Working through Walter Benjamin’s “Naples”." In Moderne begreifen, pp. 107-119. DUV, 2007.
 
+<iframe width="100%" height="520" frameborder="0" src="https://cityfish.cartodb.com/viz/76aa1ede-81a6-11e5-a8ee-0e787de82d45/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
 
