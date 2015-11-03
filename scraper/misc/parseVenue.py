@@ -11,7 +11,7 @@ def genCategory(cat, catArrays):
 			if cat in catArrays[c]:
 				return c
 
-def parseVenue(full_venue, catArrays, tileID, place):
+def parseVenue(full_venue, catArrays, tileID, query):
 	
 	try:
 		createdAt = time.gmtime(full_venue["createdAt"])
@@ -34,7 +34,7 @@ def parseVenue(full_venue, catArrays, tileID, place):
 		rating = '-1'
 
 	if "tags" in full_venue.keys():
-		tags = ';'.join(full_venue['keys'])
+		tags = ';'.join(full_venue['tags'])
 	else:
 		tags = ''
 
@@ -57,7 +57,7 @@ def parseVenue(full_venue, catArrays, tileID, place):
 	 	'createdAt': time.strftime("%Y.%m.%d ", createdAt),
 	 	'tileID': tileID,
 	 	'ID':full_venue['id'].encode('utf-8'),
-	 	'place':place.encode('utf-8'),
+	 	'query':query.encode('utf-8'),
 	 	'time':time.strftime("%Y.%m.%d %H:%M:%S "),
 	 	'verified': str(full_venue['verified']),
 	 	'price': price,
