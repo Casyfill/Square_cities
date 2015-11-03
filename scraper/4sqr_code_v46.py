@@ -112,6 +112,7 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
           print 'level %d reached: %d requests, %d venues so far!' % (level, len(tileArray), totalVenues)
 
           for tile in tileArray:
+            try:
               ask = frsqrRequests.VenueSearch(
                   tile['sw'], tile['ne'], CLIENT_ID, CLIENT_SECRET)
 
@@ -162,13 +163,13 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
                       totalVenues += len(p)
 
               time.sleep(sleepTime)
-              # try:
+              
                   
-              # except Exception, e:
-              #     print str(e)
-              #     print tile['name'], ':', read, '/', spreads, 'error while asking!'
-              #     newTileArray.append(tile)
-              #     time.sleep(sleepTime * 5)
+            except Exception, e:
+                  print str(e)
+                  print tile['name'], ':', read, '/', spreads, 'error while asking!'
+                  newTileArray.append(tile)
+                  time.sleep(sleepTime * 5)
 
       print 'scraping %s done!, venues: %d' % (place['name'], totalVenues)
 
