@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# all documentation is here
+# https://developer.foursquare.com/docs/venues/explore
 import json, requests, time
 
 def requestsCats(CLIENT_SECRET, CLIENT_ID):
@@ -35,7 +37,8 @@ def generateCatArray(CLIENT_SECRET, CLIENT_ID):
 
 
 def getCompleteDetails(id, CLIENT_ID,CLIENT_SECRET, sleepTime):
-	global requests, json
+	'''returns detailed venue profile'''
+
 	pl = {'client_id':CLIENT_ID,
 			'client_secret':CLIENT_SECRET,
 			'v':'20140723'
@@ -50,17 +53,21 @@ def getCompleteDetails(id, CLIENT_ID,CLIENT_SECRET, sleepTime):
 
 
 def VenueSearch(sw,ne,CLIENT_ID,CLIENT_SECRET):
-	global requests, json
+	'''venue search, returns list of compact venues 
+	for specific area'''
+	
 	baseUrl = "https://api.foursquare.com/v2/venues/search" #sw=%s&ne=%s&client_id=%s&client_secret=%s&intent=browse" % (sw, ne, CLIENT_ID, CLIENT_SECRET)
 	payload = {'sw':sw,
 				'ne':ne,
 				'client_id':CLIENT_ID,
 				'client_secret':CLIENT_SECRET,
 				'intent':'browse',
-				'v':'20140723',
-				'limit':50
+				'v':'20151105',
+				'limit':50,
+				"m":'foursquare'
 				}
 
 	return json.loads(requests.get(baseUrl, params=payload).text)
-	
-		
+
+
+# 'v':'20140723',

@@ -21,7 +21,7 @@ Few steps to stat scraping 4sqr
 2. create a developer account here (your aim is to get **client secret** and **client id**): [4square dev](https://developer.foursquare.com/)
 3. Save your credentials into repo/scraper/credentials.json
 4. Untrack your credentials file by doing this from repository folder: git update-index --assume-unchanged scraper/credentials.json
-5. Create **SQUARE** alias to repository. Path to credentials then should beSQUARE + 'scraper/credentials.json'.
+5. depricated: create "SQUARE" alias. Now I use "PWD" instead of "SQUARE"
 6. Add all desired places (cities) to `scraper/places.json` file. Dont forget to check json validity!
 7. Start scraper by sending 'python 4sqr_code_v46.py' bash command, and select place you want to scrape. All data will be saved in `data` folder. Be aware: for now script overwrite old version of same place data
 
