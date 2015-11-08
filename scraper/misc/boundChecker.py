@@ -4,7 +4,7 @@
 def checkVsBound(sw,ne, lat, lon):
 	s,w =[float(x.strip()) for x in sw.split(',')]
 	n,e =[float(x.strip()) for x in ne.split(',')]
-	return (n>=lat >=s) and (e >= lon >=w)
+	return (s<=lat <=n) and (w <= lon <=e)
 
 
 def checkArrayVsBound(sw,ne, array):

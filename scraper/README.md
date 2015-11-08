@@ -1,17 +1,33 @@
 notes_on_scraping
 =================
+**scraping venues from FOURSQUARE API for the research purposes** 
 
-## TODO
-- [X] credentials
-- [X] extract place_data
-- [X] update paths
-- [X] make scraper bash-workable
-- [X] extract place coordinates
-- [X] overal architecture
-- [ ] additional search_checker
+##### foundation project, Applied Data science
+##### CUSP 2015-16
+##### PHilipp Kats, casyfill@gmail.com
 
-- [ ] quit key
-- [ ] to Mongo database (?)
+##### scraper is based on previous version, 
+##### used for projects in ITMO, Saint Petersburg, 2014
+##### and Senseable city lab, Strelka Institute, 2012
+
+#### version 5.00.00
+
+we have semantic versioning: X.YY.ZZ 
+where X - major step (project), 
+YY - architecture or major feature,
+ZZ - minor improvements
+
+## TODOS
+- [x] credentials
+- [x] paths
+- [x] extract place_research
+- [x] overal architecture
+- [x] checker_condition as a specific function
+- [x] added main large cities to places
+- [ ] add geodistance calc to checker (for now, calculate 	delta in coordinates)
+- [ ] move all settings to settings.json
+- [ ] logger
+- [ ] gui stat_map drawer
 
 
 ## INSTRUCTION

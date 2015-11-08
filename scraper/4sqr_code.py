@@ -1,0 +1,186 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+### scraping venues from FOURSQUARE API
+### as data for the research. 
+
+### foundation project, Applied Data science
+### CUSP 2015-16
+### PHilipp Kats, casyfill@gmail.com
+
+# import requests,time,json
+import sys
+import csv
+import time
+import json
+import os
+
+from misc.matrix import matrix
+from misc.boundChecker import checkVsBound, checkArrayVsBound
+
+from misc import parseVenue
+from misc import frsqrRequests
+from misc import get_settings
+
+# sys.path.append(modulePath)
+PWD = os.getenv('PWD')
+
+
+def detail_condition(n, tile):
+  '''decide if result is suspecious enough to detail
+  subject of change'''
+  def condition(n, tile):
+    nlim = 32  #n of venues not smaller than
+    limV = 0.0073 # tile is smaller than
+    limG = 0.0126 # tile is smaller than
+    
+    s,w =[float(x.strip()) for x in tile['sw'].split(',')]
+    n,e =[float(x.strip()) for x in tile['ne'].split(',')]
+    
+    dCond = (n-s)<limV or (e-w)<limG
+    return not(n>=nlim or dCond)
+
+
+  answer = n>=50 or condition(n, tile)
+  return answer
+
+
+def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
+  '''main scraping engine. everythin is in here'''
+  
+  headers = ['genCategory',   # csv headers (params)
+             'category',
+             'name',
+             'lon',
+             'lat',
+             'checkIns',
+             'tips',
+             'users',
+             'createdAt',
+             'tileID',
+             'ID',
+             'query',
+             'time',
+             'verified',
+             'price',
+             'rating',
+             'tags',
+             'photoCount',
+             'description']
+
+  with open(PWD.replace('/scraper', '/') + 'data/%s.csv' % place['name'], 'w') as csvfile:
+    '''non-stop writing''' ## actually this is bad approach, need to change this       
+    writer = csv.writer(csvfile, delimiter=',',
+                            quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(headers)
+
+  # First list of requests
+  newTileArray = [{'sw': place['swBound'],
+                     'ne': place['neBound'], 'name': '0'}]
+  # list of categories
+  catArrays = frsqrRequests.generateCatArray( CLIENT_SECRET, CLIENT_ID) 
+
+  #VARIABLES
+  level = 0  # detalisation level
+  spreads = 1  # amount of queries required
+  read = 0  # amount of queries accomplished
+  totalVenues = 0  # total venuse collected
+
+  while len(newTileArray) > 0:  # while there is some queries in line
+    tileArray = newTileArray  # list of tiles to search
+    newTileArray = []  # empty the list for next itteration
+    level += 1 ## level of precision (smaller and smaller area)
+
+    ## TO LOG
+    print 'level %d reached: %d requests, %d venues so far!' % (level, 
+                                                                len(tileArray), 
+                                                                totalVenues)
+            
+    for tile in tileArray:
+      # actual work
+      try:
+        ask = frsqrRequests.VenueSearch(
+        tile['sw'], tile['ne'], CLIENT_ID, CLIENT_SECRET)
+
+        # check status
+        if ask['meta']['code'] != 200:  # if status is bad
+          if ask['meta']['errorType'] == 'geocode_too_big':
+            
+            print tile['name'], ':', read, '/', spreads, ' too big, detailed!'# TO LOGGER        
+            # add detailed tile_matrix to next level list
+            newTileArray += matrix(tile['sw'], tile['ne'], tile['name'])
+            spreads += 3
+                  
+            # ПОЧЕМУ-ТО ДО ЭТОГО МЕСТА НЕ ДОХОДИТ :-(((
+          else:
+            # not the geocode_too_big issue
+            print tile['name'], ':', ask['meta']['errorType']
+            newTileArray.append(tile)
+                
+        else: # if everything is good
+          p = checkArrayVsBound(tile['sw'], tile['ne'], ask[u"response"][u"venues"])
+            
+          if detail_condition(len(p), tile):
+            # looks like a limit, need detalied matrix to the next list
+            print tile['name'], ':', read, '/', spreads, ' detailed!'# TO LOGGER
+            newTileArray += matrix(tile['sw'],tile['ne'], tile['name'])
+            
+            spreads += 3
+
+
+          elif len(p) == 0:  # if answer is empty
+            read += 1
+            # TO LOGGER
+            print tile['name'], ':', read, '/', spreads, 'zone empty'
+
+
+          else:  # if answe is not empty
+            read += 1
+            ### HERE NEED TO ADD CHECKER
+            print tile['name'], ':', read, '/', spreads, 'saved: %d venues' % (len(p))
+            
+            with open(PWD.replace('/scraper', '/data/%s.csv' % place['name']), 'a') as csvfile:     
+                writer = csv.writer(csvfile, delimiter=',',
+                                        quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                # save venues
+                for venue in p:
+                    ID = venue['id']
+
+                    # get details on venue
+                    full_venue = frsqrRequests.getCompleteDetails( 
+                          ID, CLIENT_ID, CLIENT_SECRET, sleepTime)
+                    v = parseVenue.parseVenue(
+                          full_venue, catArrays, tile['name'], place['name'])
+                          
+                    # SAVING DATA
+                    writer.writerow([v[key] for key in headers])
+
+              
+            totalVenues += len(p) 
+            time.sleep(sleepTime) # TIME TO SLEEP. DON'T MAKE SERVER ANGRY !!!
+    
+
+
+      except Exception, e:
+        print str(e)
+        print tile['name'], ':', read, '/', spreads, 'error while asking!'
+        newTileArray.append(tile)
+        time.sleep(sleepTime * 5)
+
+  print 'scraping %s done!, venues: %d' % (place['name'], totalVenues)
+
+
+def main():
+    '''main scraping function'''
+
+    # getting attributes
+    CLIENT_SECRET, CLIENT_ID = get_settings.getCredentials(PWD)
+
+    place = get_settings.askForPlace(PWD)
+    # print place
+    print '\n\n\n'
+    scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20)
+
+
+if __name__ == '__main__':
+    main()
