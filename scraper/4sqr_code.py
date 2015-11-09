@@ -196,8 +196,8 @@ def main():
     '''main scraping function'''
 
     # getting attributes
-    CLIENT_SECRET, CLIENT_ID = get_settings.getCredentials(PWD)
-
+    # CLIENT_SECRET, CLIENT_ID = get_settings.getCredentials(PWD)
+    CLIENT_SECRET, CLIENT_ID = get_settings.chooseCredentials(PWD)
     place = get_settings.askForPlace(PWD)
     # print place
     

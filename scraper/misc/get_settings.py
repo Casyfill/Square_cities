@@ -1,13 +1,33 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 import json
+from os import listdir
+import sys
 
 def getCredentials(mainPath):
-    # credentials
+    '''get credentials. DEPRICATED: now we have to chose them from list (if there are more than one'''
     with open(mainPath + '/credentials.json') as data_file:
         credentials = json.load(data_file)
         return (credentials['data']['CLIENT_SECRET'], credentials['data']['CLIENT_ID'])
 
+def chooseCredentials(mainPath):
+    '''gives you chance to choose credentials'''
+
+    creds = [ x for x in listdir(mainPath) if 'credent' in x]
+
+    if len(creds)>1:
+        for i, v in enumerate(creds):
+            print i+1,'. ', v
+
+    index = int(raw_input('\n\nselect credentials to use:'))-1
+
+    with open(mainPath + '/' + creds[index]) as data_file:
+        credentials = json.load(data_file)
+        if credentials['data']['CLIENT_SECRET']=="MY_CLIENT_SECRET":
+            print '\n\noh dear, you forgot to save your REAL credentials in that file.'
+            sys.exit()
+
+        return (credentials['data']['CLIENT_SECRET'], credentials['data']['CLIENT_ID'])
 
 def getPlaces(mainPath):
     '''looks for places in json and gives you

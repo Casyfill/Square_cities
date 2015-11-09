@@ -59,4 +59,4 @@ target/
 *.csv
 # *credentials.json
 #
-logs/
+*.out
