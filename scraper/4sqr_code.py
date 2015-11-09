@@ -14,6 +14,8 @@ import csv
 import time
 import json
 import os
+import logging
+import datetime
 
 from misc.matrix import matrix
 from misc.boundChecker import checkVsBound, checkArrayVsBound
@@ -24,6 +26,25 @@ from misc import get_settings
 
 # sys.path.append(modulePath)
 PWD = os.getenv('PWD')
+
+class SystemLog(object):
+    def __init__(self, name=None):
+        self.logger = logging.getLogger(name)
+
+    def write(self, msg, level=logging.INFO):
+        self.logger.log(level, msg)
+
+    def flush(self):
+        for handler in self.logger.handlers:
+            handler.flush()
+
+sys.stderr = SystemLog('stderr')
+
+
+def config_logger():
+    logging.basicConfig(filename = './logs/'  + datetime.datetime.now().strftime('%b_%d_%y_%H_%M') + '.out', filemode = 'a', format = '%(asctime)s, %(msecs)d %(name)s %(levelname)s %(message)s', datefmt='%H:%M:%S', level = logging.DEBUG)
+
+
 
 
 def detail_condition(n, tile):
@@ -92,9 +113,9 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
     level += 1 ## level of precision (smaller and smaller area)
 
     ## TO LOG
-    print 'level %d reached: %d requests, %d venues so far!' % (level, 
+    logging.info( 'level %d reached: %d requests, %d venues so far!' % (level, 
                                                                 len(tileArray), 
-                                                                totalVenues)
+                                                                totalVenues))
             
     for tile in tileArray:
       # actual work
@@ -106,7 +127,7 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
         if ask['meta']['code'] != 200:  # if status is bad
           if ask['meta']['errorType'] == 'geocode_too_big':
             
-            print tile['name'], ':', read, '/', spreads, ' too big, detailed!'# TO LOGGER        
+            logging.info( str(tile['name']) + ':' + str(read) + '/' + str(spreads) +  ' too big, detailed!')# TO LOGGER        
             # add detailed tile_matrix to next level list
             newTileArray += matrix(tile['sw'], tile['ne'], tile['name'])
             spreads += 3
@@ -114,7 +135,7 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
             # ПОЧЕМУ-ТО ДО ЭТОГО МЕСТА НЕ ДОХОДИТ :-(((
           else:
             # not the geocode_too_big issue
-            print tile['name'], ':', ask['meta']['errorType']
+            logging.info( str(tile['name']) + ':' + str(ask['meta']['errorType']))
             newTileArray.append(tile)
                 
         else: # if everything is good
@@ -122,7 +143,7 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
             
           if detail_condition(len(p), tile):
             # looks like a limit, need detalied matrix to the next list
-            print tile['name'], ':', read, '/', spreads, ' detailed!'# TO LOGGER
+            logging.info( str(tile['name']) + ':' + str(read) + '/'+  str(spreads) + ' detailed!')# TO LOGGER
             newTileArray += matrix(tile['sw'],tile['ne'], tile['name'])
             
             spreads += 3
@@ -131,13 +152,13 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
           elif len(p) == 0:  # if answer is empty
             read += 1
             # TO LOGGER
-            print tile['name'], ':', read, '/', spreads, 'zone empty'
+            logging.info( str(tile['name']) + ':' + str(read) + '/' + str(spreads) + 'zone empty')
 
 
           else:  # if answe is not empty
             read += 1
             ### HERE NEED TO ADD CHECKER
-            print tile['name'], ':', read, '/', spreads, 'saved: %d venues' % (len(p))
+            logging.info( str(tile['name']) + ':' + str(read) + str('/') + str(spreads) + str( 'saved: %d venues' % (len(p))))
             
             with open(PWD.replace('/scraper', '/data/%s.csv' % place['name']), 'a') as csvfile:     
                 writer = csv.writer(csvfile, delimiter=',',
@@ -162,15 +183,16 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
 
 
       except Exception, e:
-        print str(e)
-        print tile['name'], ':', read, '/', spreads, 'error while asking!'
+        logging.info( str(e))
+        logging.info( str(tile['name']) + ':' + str(read) + '/' + str(spreads) + 'error while asking!')
         newTileArray.append(tile)
         time.sleep(sleepTime * 5)
 
-  print 'scraping %s done!, venues: %d' % (place['name'], totalVenues)
+  logging.info( 'scraping %s done!, venues: %d' % (place['name'], totalVenues))
 
 
 def main():
+    config_logger()
     '''main scraping function'''
 
     # getting attributes
@@ -178,7 +200,7 @@ def main():
 
     place = get_settings.askForPlace(PWD)
     # print place
-    print '\n\n\n'
+    
     scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20)
 
 
