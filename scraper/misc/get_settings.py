@@ -19,7 +19,9 @@ def chooseCredentials(mainPath):
         for i, v in enumerate(creds):
             print i+1,'. ', v
 
-    index = int(raw_input('\n\nselect credentials to use:'))-1
+        index = int(raw_input('\n\nselect credentials to use:'))-1
+    else:
+        indes = 0
 
     with open(mainPath + '/' + creds[index]) as data_file:
         credentials = json.load(data_file)
