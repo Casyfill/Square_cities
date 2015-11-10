@@ -21,7 +21,7 @@ def chooseCredentials(mainPath):
 
         index = int(raw_input('\n\nselect credentials to use:'))-1
     else:
-        indes = 0
+        index = 0
 
     with open(mainPath + '/' + creds[index]) as data_file:
         credentials = json.load(data_file)
