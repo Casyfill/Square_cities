@@ -27,7 +27,7 @@ def chooseCredentials(mainPath):
             print '\n\noh dear, you forgot to save your REAL credentials in that file.'
             sys.exit()
 
-        return (credentials['data']['CLIENT_SECRET'], credentials['data']['CLIENT_ID'])
+        return (credentials['data']['CLIENT_SECRET'], credentials['data']['CLIENT_ID'], creds[index])
 
 def getPlaces(mainPath):
     '''looks for places in json and gives you
