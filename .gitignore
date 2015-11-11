@@ -56,7 +56,7 @@ docs/_build/
 # PyBuilder
 target/
 
-*.csv
+data/*
 credent*
 #
 *.out
