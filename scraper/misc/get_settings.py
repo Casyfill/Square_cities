@@ -64,7 +64,7 @@ def askForPlace(mainPath):
                     name = places['data'].keys()[ix]
                     data = places['data'][name]
                     data['name'] = name
-                    return data
+                    return data, name
 
             except Exception, e:
                 print str(e)

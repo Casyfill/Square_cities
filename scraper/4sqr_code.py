@@ -16,6 +16,7 @@ import json
 import os
 import logging
 import datetime
+import pandas as pd
 
 from misc.matrix import matrix
 from misc.boundChecker import checkVsBound, checkArrayVsBound
@@ -44,7 +45,27 @@ sys.stderr = SystemLog('stderr')
 def config_logger():
     logging.basicConfig(filename = './logs/'  + datetime.datetime.now().strftime('%b_%d_%y_%H_%M') + '.out', filemode = 'a', format = '%(asctime)s, %(msecs)d %(name)s %(levelname)s %(message)s', datefmt='%H:%M:%S', level = logging.DEBUG)
 
+def save_start_status(mainPath, credentials, place):
+  '''general scraper log'''
+  timestamp = datetime.datetime.now().strftime('%b_%d_%y_%H_%M')
 
+  slog = pd.read_csv(mainPath +'/status.csv')  
+  
+  slog= slog.append(pd.Series({'timestamp': timestamp,
+                   'credentials':credentials,
+                   'place':place,
+                   'status':'start'}), ignore_index=1)
+    
+  slog.to_csv(PWD +'/status.csv', index=0)
+
+  return timestamp 
+
+
+def save_end_status(mainPath, credentials,place,timestamp):
+  print "%s finished! cred=%s" %(place, credentials) 
+  slog = pd.read_csv(mainPath +'/status.csv')
+  slog.status[(slog.place==place) & (slog.credentials==credentials) & (slog.timestamp==timestamp)] = 'finished'
+  slog.to_csv(PWD +'/status.csv', index=0)
 
 
 def detail_condition(n, tile):
@@ -192,18 +213,21 @@ def scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20):
 
 
 def main():
-    config_logger()
     '''main scraping function'''
+    config_logger()
 
     # getting attributes
-    # CLIENT_SECRET, CLIENT_ID = get_settings.getCredentials(PWD)
+    
     CLIENT_SECRET, CLIENT_ID, CREDENTIAL_FILE = get_settings.chooseCredentials(PWD)
-    place = get_settings.askForPlace(PWD)
+    place, pName = get_settings.askForPlace(PWD)
+
+    TIMESTAMP = save_start_status(PWD,CREDENTIAL_FILE, pName)
+
     logging.info("Using credentials from %s" % CREDENTIAL_FILE)
     logging.info("Getting data for %s" % place)
     
     scraping(CLIENT_ID, CLIENT_SECRET, place, sleepTime=20)
-
+    save_end_status(PWD,CREDENTIAL_FILE, pName, TIMESTAMP)
 
 if __name__ == '__main__':
     main()
