@@ -1,0 +1,80 @@
+
+
+#tokyo_all{
+  marker-width:4;
+  marker-fill:#e5dbdc;
+  marker-line-color:#813;
+  marker-allow-overlap:true;
+  marker-ignore-placement:true;
+}
+
+#tokyo_all[gencategory="Food"]{
+  marker-width:4;
+  marker-fill:#ffed00,;
+}
+
+#tokyo_all[gencategory="Shop & Service"]{
+  marker-width:4;
+  marker-fill:#27ebeb,;
+}
+
+#tokyo_all[gencategory='Professional & Other Places']{
+  marker-width:4;
+  marker-fill:#330fab,;
+}
+
+#tokyo_all[gencategory='Travel & Transport']{
+  marker-width:4;
+  marker-fill:#0638ec,;
+}
+
+#tokyo_all[gencategory='Outdoors & Recreation']{
+  marker-width:4;
+  marker-fill:#1bd90b,;
+}
+
+#tokyo_all[gencategory='Nightlife Spot']{
+  marker-width:4;
+  marker-fill:#9c0cf5,;
+}
+
+#tokyo_all[gencategory='Arts & Entertainment']{
+  marker-width:4;
+  marker-fill:#f077ff,;
+}
+
+#tokyo_all[gencategory="College & University"]{
+  marker-width:4;
+  marker-fill:#d6af24,;
+}
+
+#tokyo_all[gencategory="Residence"]{
+  marker-width:4;
+  marker-fill:#ff2525,;
+}
+
+#tokyo_all[gencategory="Event"]{
+  marker-width:4;
+  marker-fill:#f9f605;
+}
+
+
+/*
+
+Food                           #2fdf3b
+Shop & Service                 #27ebeb
+Professional & Other Places    #330fab
+Travel & Transport             #0638ec
+Outdoors & Recreation          #1bd90b
+Nightlife Spot                 #9c0cf5
+Arts & Entertainment           #f077ff
+College & University           #d6af24
+Residence                      #ff2525
+Event                          #f9f605
+
+*/
+
+/* Food ShopService ProfessionalOtherPlaces TravelTransport OutdoorsRecreation NightlifeSpot ArtsEntertainment CollegeUniversity Residence Event*/
+
+
+#2fdf3b, #27ebeb, #330fab, #0638ec, #1bd90b, #9c0cf5, #f077ff, #d6af24, #ff2525, #f9f605
