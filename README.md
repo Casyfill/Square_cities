@@ -14,6 +14,17 @@
 ## Proposals
 [Proposals text](https://docs.google.com/document/d/1FLsmn24OLyyvL__895X0a5aXCz3h4ktcc5C4bAlfOXU/edit?usp=sharing)
 
+## Data collected
+
+- [x] Tokyo
+- [x] Shanghai
+- [x] Singapor
+- [x] New York ~
+- [x] San Francisco ~
+- [x] Moscow ~
+- [x] Kiev ~
+- [ ] Minsk 
+
 #### Previous research
 - [Live project (In russian, use icon to open maps)](http://www.4sqstat.com/)
 - [Pre-Presentation](https://www.dropbox.com/s/szgt9yvicj507ww/2012_05_08_pres_template2.pdf?dl=0)
