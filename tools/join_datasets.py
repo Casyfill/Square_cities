@@ -9,12 +9,26 @@ import pandas as pd
 def main(key, mypath):
 	'''aggregate all csv files for place specfied 
 	   (technically just a keword mentioned in all related csv files''' 
-	   	
+	
+	cols = ['ID',
+			'category',
+			'checkIns',
+			'createdAt',
+			'description',
+			'genCategory',
+			'lat','lon',
+			'name',
+			'photoCount',
+			'price',
+			'query','rating',
+			'tags','tileID',
+			'time','tips',
+			'users','verified']
 
 	onlyfiles = [ f for f in os.listdir(mypath) if (os.path.isfile(os.path.join(mypath,f)) and ('.csv' in f) and (key in f)) ]
 
-	df = pd.concat([pd.read_csv(os.path.join(mypath,f)) for f in onlyfiles]).drop_duplicates(subset='ID')
-	df.to_csv(os.path.join(mypath, key +'_all.csv'))
+	df = pd.concat([pd.read_csv(os.path.join(mypath,f))[cols] for f in onlyfiles]).drop_duplicates(subset='ID')
+	df.to_csv(os.path.join(mypath, key +'_all.csv'), index=0)
 	print '%s rows total, Saved to '%len(df), os.path.join(mypath, key +'_all.csv')
 
 		
