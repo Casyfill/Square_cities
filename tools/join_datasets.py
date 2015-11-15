@@ -22,6 +22,13 @@ def main(key, mypath):
 
 
 if __name__ == '__main__':
-	main(sys.argv[1], sys.argv[2])
+	if len(sys.argv)>2:
+		main(sys.argv[1], sys.argv[2])
+	elif len(sys.argv)==2:
+		p = os.getenv('PWD').replace('/tools','/data')
+		main(sys.argv[1],p)
+	else:
+		print 'need kewName to filter files!'
+
 
 
