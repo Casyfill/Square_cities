@@ -60,3 +60,7 @@ data/*
 credent*
 #
 *.out
+
+*.docx
+
+*.pdf
